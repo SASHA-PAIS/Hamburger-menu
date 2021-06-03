@@ -1,0 +1,155 @@
+.menu-wrap{
+    position: fixed;  /*If we open the menu it should never go out of focus even if we scroll*/
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.menu-wrap .toggler{     /*nested class*/
+    position: absolute;   /*To the body I think*/
+    top: 0;
+    left: 0;
+    z-index: 2; /*It will be invisible but it will always be on top*/
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    opacity: 0;
+}
+
+.menu-wrap .hamburger{
+    position: absolute;   /*Same osition as the toggler*/
+    top: 0;
+    left: 0;
+    z-index: 1;         /*Should be exactly below the toggler*/
+    width: 50px;
+    height: 50px;
+    background: var(--primary-color);
+    display: flex;   /*The empty div inside will arrange as a flexbox*/
+    align-items: center;
+    justify-content: center;
+}
+
+/* Hamburger middle line */
+.menu-wrap .hamburger > div{
+    position: relative;
+    width: 60%;
+    height: 2px;
+    background: #fff;
+
+    transition: all 0.4s ease;   /* For toggler animation*/
+
+} 
+
+/* Hamburger lines - top & bottom */
+.menu-wrap .hamburger > div::before,
+.menu-wrap .hamburger > div::after
+{
+    content: '';
+    position: absolute;   /*absolutely relaative to the relative div above*/
+    top: -10px;
+    width: 100%;
+    height: 2px;
+    background: inherit;   /*Inherit the color from the above div*/
+  
+}
+
+/* Bottom line */
+.menu-wrap .hamburger > div:after{
+    top: 10px;
+}
+
+
+/* Toggler animation */
+/* Animation should happen when it is checked, 
+also the div inside the hamburger has to be converted into a cross */
+
+.menu-wrap .toggler:checked + .hamburger > div{   /*+ indicates the element directly after, not directly inside(nested indicated by >)*/
+    transform: rotate(135deg);
+}
+
+/* Turns lines into X */
+.menu-wrap .toggler:checked + .hamburger > div:before, 
+.menu-wrap .toggler:checked + .hamburger > div:after{
+    top:0;
+    transform: rotate(90deg);
+}
+
+
+/* Rotate on hover when checked */
+
+/* When the toggler is hovered in a checked state, the hamburger div should rotate */
+.menu-wrap .toggler:checked:hover + .hamburger > div{
+    transform: rotate(225deg);
+}
+
+/* SHOW MENU */
+
+.menu-wrap .toggler:checked ~ .menu{    /*Can't use .menu cause it's not nested nor can we use + .menu cause the menu div is not directly after*/
+    visibility: visible;
+    
+}
+
+.menu-wrap .toggler:checked ~ .menu > div{
+    transform: scale(1);
+    transition-duration :var(--menu-speed);
+}
+
+.menu-wrap .toggler:checked ~ .menu > div > div{
+    opacity: 1;
+    transition: opacity 0.4s ease 0.4s;            /*The text appeaars after a delay*/
+}
+
+/*Pre-requisites to show the menu*/
+
+.menu-wrap  .menu{                  
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;  /*No scroll bar*/
+    visibility: hidden;                 /*Has to be transitioned*/
+    display: flex;                         /*The div inside menu arranges in a flex mode*/
+    align-items: center;
+    justify-content: center;
+
+}
+
+.menu-wrap .menu > div{
+    background: var(--overlay-color);
+    border-radius: 50%;
+    width: 200vw;
+    height: 200vw;
+    display: flex;                  /*Without this, the list items won't be seen */
+    flex: none;                        /*To solve the issue of it opening as a circle*/
+    align-items: center;
+    justify-content: center;
+    transform: scale(0);               /*Has to be transitioned*/
+    transition: all 0.4s ease;
+}
+
+.menu-wrap .menu > div > div{
+    text-align: center;
+    max-width: 90vw;
+    max-height: 100vh;
+    opacity: 0;                         /*Has to be transitioned*/
+    transition: opacity 0.4s ease;
+}
+
+.menu-wrap .menu > div > div > ul > li{
+    list-style: none;
+    color: #fff;
+    font-size: 1.5rem;
+    padding: 1rem;
+}
+
+.menu-wrap .menu > div > div > ul > li > a{
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.4s ease;
+}
+
+.menu-wrap .menu > div > div > ul > li > a:hover{
+    color: var(--secondary-color);
+  
+}
